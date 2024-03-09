@@ -69,6 +69,12 @@
       <artifactId>mybatis-generator-core</artifactId>
       <version>1.4.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <finalName>furn-ssm</finalName>

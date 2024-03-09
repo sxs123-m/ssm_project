@@ -17,6 +17,19 @@ public class Furn {
 
     private String imgPath;
 
+    public Furn() {
+    }
+
+    public Furn(Integer id, String name, String maker, BigDecimal price, Integer sales, Integer stock, String imgPath) {
+        this.id = id;
+        this.name = name;
+        this.maker = maker;
+        this.price = price;
+        this.sales = sales;
+        this.stock = stock;
+        this.imgPath = imgPath;
+    }
+
     public Integer getId() {
         return id;
     }
