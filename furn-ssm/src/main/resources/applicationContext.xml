@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--1.扫描com.sun.furn的包以及子包-->
+    <context:component-scan base-package="com.sun.furn">
+        <!--spring扫描除了Controller以外的注解-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--2.引入外部配置文件classpath：类路径在普通java项目下相当于src-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--3.配置数据源对象, 德鲁伊-->
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="pooledDataSource">
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.pwd}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+    </bean>
+
+    <!--4.配置mybatis和spring的整合-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <!--指定mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--指定数据源-->
+        <property name="dataSource" ref="pooledDataSource"/>
+        <!--指定mybatis的mapper.xml文件的位置，通常放在类路径下的mapper目录下-->
+        <!--<property name="mapperLocations" value="classpath:mapper/*.xml"/>-->
+     </bean>
+
+    <!--5.配置扫描器，将mybatis接口的实现加入到ioc容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--这里的dao文件夹下存放的就是Mapper接口-->
+        <property name="basePackage" value="com.sun.furn.dao"/>
+    </bean>
+
+    <!--6.配置事务管理器对象-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+        <!--需要与数据源关联，因为操作数据库的jdbcTemplate要与dataSource关联，他们要一致-->
+        <property name="dataSource" ref="pooledDataSource"/>
+    </bean>
+    <!--配置启动注解的声明式事务管理功能-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
 
 </beans>
