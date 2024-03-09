@@ -3,5 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
+    <!--设置bean的类型别名-->
+    <typeAliases>
+        <package name="com.sun.furn.bean"/>
+    </typeAliases>
 </configuration>
