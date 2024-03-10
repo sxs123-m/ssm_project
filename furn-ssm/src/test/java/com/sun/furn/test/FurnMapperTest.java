@@ -2,7 +2,6 @@ package com.sun.furn.test;
 
 import com.sun.furn.bean.Furn;
 import com.sun.furn.dao.FurnMapper;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

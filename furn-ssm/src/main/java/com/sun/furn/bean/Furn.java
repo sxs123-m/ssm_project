@@ -1,5 +1,7 @@
 package com.sun.furn.bean;
 
+import org.springframework.util.StringUtils;
+
 import java.math.BigDecimal;
 
 public class Furn {
@@ -15,7 +17,8 @@ public class Furn {
 
     private Integer stock;
 
-    private String imgPath;
+    //当创建Furn对象 imgPath为null时，imgPath为默认值
+    private String imgPath = "assets/images/product-image/1.jpg";
 
     public Furn() {
     }
@@ -27,7 +30,20 @@ public class Furn {
         this.price = price;
         this.sales = sales;
         this.stock = stock;
-        this.imgPath = imgPath;
+        //如果在使用全参构造器创建对象时imgPath为null时，imgPath为默认值
+        //使用spring框架的一个工具类来判断字符串是否有内容
+        /**
+         * hasText源码解读
+         *     public static boolean hasText(@Nullable String str) {
+         *         return str != null && !str.isEmpty() && containsText(str);
+         *     }
+         *     1、判断字符串是否是null
+         *     2、判断字符串的长度是否为0，也就是空的字符串“”
+         *     3、判断字符串中是否全是空格
+         */
+        if (StringUtils.hasText(imgPath)) {
+            this.imgPath = imgPath;
+        }
     }
 
     public Integer getId() {
