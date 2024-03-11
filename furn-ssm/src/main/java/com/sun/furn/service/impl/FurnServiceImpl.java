@@ -32,6 +32,17 @@ public class FurnServiceImpl implements FurnService {
     public void update(Furn furn) {
         furnMapper.updateByPrimaryKeySelective(furn);
     }
+
+    @Override
+    public void del(Integer id) {
+        furnMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Furn findById(Integer id) {
+        Furn furn = furnMapper.selectByPrimaryKey(id);
+        return furn;
+    }
 }
 
 

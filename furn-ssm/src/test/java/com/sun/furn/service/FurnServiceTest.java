@@ -54,6 +54,10 @@ public class FurnServiceTest {
         furnService.update(furn);
     }
 
+    @Test
+    public void del() {
+        furnService.del(3);
+    }
 
 }
 

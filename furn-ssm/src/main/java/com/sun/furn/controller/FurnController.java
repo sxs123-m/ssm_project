@@ -1,14 +1,14 @@
 package com.sun.furn.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.sun.furn.bean.Furn;
 import com.sun.furn.bean.Msg;
 import com.sun.furn.service.FurnService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -47,6 +47,36 @@ public class FurnController {
         furnService.update(furn);
         //如果没有异常则返回成功信息
         return Msg.success();
+    }
+
+    @DeleteMapping("/del/{id}") //路径参数
+    @ResponseBody
+    public Msg del(@PathVariable Integer id) {
+        furnService.del(id);
+        return Msg.success();
+    }
+
+    @ResponseBody
+    @GetMapping("/findById/{id}")
+    public Msg findById(@PathVariable Integer id) {
+        Furn furn = furnService.findById(id);
+        //将查询结果添加到成功的Msg对象中
+        return Msg.success().add("furn", furn);
+    }
+
+    //分页功能接口
+    @RequestMapping("/furnsByPage")
+    @ResponseBody
+    public Msg listFurnsByPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                               @RequestParam(defaultValue = "5") Integer pageSize) {
+        //1.设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        //2.查询所有数据
+        List<Furn> all = furnService.findAll();
+        //3.进行物理分页pageInfo存放了分页的信息
+        PageInfo pageInfo = new PageInfo(all, pageSize);
+
+        return Msg.success().add("pageInfo", pageInfo);
     }
 
 

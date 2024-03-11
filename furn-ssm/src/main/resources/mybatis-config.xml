@@ -12,4 +12,15 @@
     <typeAliases>
         <package name="com.sun.furn.bean"/>
     </typeAliases>
+    <!--配置mubatis分页拦截器-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--
+                配置分页合理化
+                1.当用户请求的页数大于最后一页时，显示查询最后一页
+                2.当用户请求的页数小于第一页时，显示查询第一页
+            -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
 </configuration>

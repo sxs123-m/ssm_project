@@ -15,4 +15,8 @@
         public List<Furn> findAll();
         //修改家居
         public void update(Furn furn);
+        //删除家居
+        public void del(Integer id);
+        //根据id获取家居信息
+        public Furn findById(Integer id);
     }
