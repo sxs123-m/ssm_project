@@ -4,11 +4,14 @@ import com.sun.furn.bean.Furn;
 import com.sun.furn.bean.Msg;
 import com.sun.furn.service.FurnService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author 孙显圣
@@ -28,5 +31,44 @@ public class FurnController {
         return Msg.success();
     }
 
+    @ResponseBody
+    @RequestMapping("/furns")
+    public Msg listFurns() {
+        //从后端获取所有信息
+        List<Furn> all = furnService.findAll();
+        //封装成功的Msg并返回
+        return Msg.success().add("furnList", all);
+    }
+
+    @ResponseBody
+    @RequestMapping("/update")
+    public Msg update(@RequestBody  Furn furn) {
+        //更新数据
+        furnService.update(furn);
+        //如果没有异常则返回成功信息
+        return Msg.success();
+    }
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

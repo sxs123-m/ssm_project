@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author 孙显圣
@@ -36,5 +37,44 @@ public class FurnServiceTest {
         furnService.save(furn);
     }
 
+    @Test
+    public void findAll() {
+        List<Furn> all = furnService.findAll();
+        for (Furn furn : all) {
+            System.out.println(furn);
+        }
+    }
+
+    @Test
+    public void update() {
+        Furn furn = new Furn();
+        furn.setId(1);
+        furn.setName("修改家居");
+        furn.setImgPath(null);
+        furnService.update(furn);
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
