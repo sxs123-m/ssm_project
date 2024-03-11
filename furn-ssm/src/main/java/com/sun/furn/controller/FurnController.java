@@ -1,17 +1,20 @@
 package com.sun.furn.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sun.furn.bean.Furn;
 import com.sun.furn.bean.Msg;
 import com.sun.furn.service.FurnService;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 孙显圣
@@ -25,10 +28,25 @@ public class FurnController {
 
     @ResponseBody //将结果转换成json字符串返回
     @PostMapping("/save")
-    public Msg save(@RequestBody Furn furn) { //将接受到的json字符串转换成Furn对象
-        furnService.save(furn);
-        //如果没有报错，则返回成功的Msg对象
-        return Msg.success();
+    public Msg save(@Validated @RequestBody Furn furn, Errors errors) { //将接受到的json字符串转换成Furn对象
+        //用来存储错误信息的map
+        Map<String, Object> errorMap = new HashMap<>();
+        //获取所有的error
+        List<FieldError> fieldErrors = errors.getFieldErrors();
+            //遍历错误并放到map中
+            for (FieldError fieldError : fieldErrors) {
+                errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
+            }
+        //判断map是否为空，为空则表示没有错误
+        if (errorMap.isEmpty()) {
+            furnService.save(furn);
+            return Msg.success();
+            //如果没有报错，则返回成功的Msg对象
+        } else {
+            //将信息放错误的Msg中并返回
+            return Msg.fail().add("errMsg", errorMap);
+        }
+
     }
 
     @ResponseBody
@@ -79,10 +97,68 @@ public class FurnController {
         return Msg.success().add("pageInfo", pageInfo);
     }
 
+    //条件分页接口
+    @RequestMapping("/listFurnsByCondition")
+    @ResponseBody
+    public Msg listFurnsByCondition(@RequestParam(defaultValue = "1") Integer pageNum,
+                                    @RequestParam(defaultValue = "5") Integer pageSize, @RequestParam(defaultValue = "") String search) {
+        //1.设置分页参数
+        PageHelper.startPage(pageNum, pageSize);
+        //2.查询所有数据
+        List<Furn> byCondition = furnService.findByCondition(search);
+        //3.进行分页
+        PageInfo pageInfo = new PageInfo(byCondition, pageSize);
 
-
+        return Msg.success().add("pageInfo", pageInfo);
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

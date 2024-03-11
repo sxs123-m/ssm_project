@@ -3,6 +3,7 @@
     import com.sun.furn.bean.Furn;
 
     import java.util.List;
+    import java.util.PropertyResourceBundle;
 
     /**
      * @author 孙显圣
@@ -19,4 +20,6 @@
         public void del(Integer id);
         //根据id获取家居信息
         public Furn findById(Integer id);
+        //根据条件模糊查询
+        public List<Furn> findByCondition(String name);
     }

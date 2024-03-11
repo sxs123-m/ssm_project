@@ -59,7 +59,61 @@ public class FurnServiceTest {
         furnService.del(3);
     }
 
+    @Test
+    public void findByCondition() {
+        List<Furn> list = furnService.findByCondition("桌子");
+        for (Furn furn : list) {
+            System.out.println(furn);
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
